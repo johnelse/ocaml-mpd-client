@@ -1,0 +1,19 @@
+name: mpd-client
+version: 0.1.0
+synopsis: MPD client library
+obuild-ver: 1
+
+library mpd_client
+  src-dir: lib
+  modules: mpd_transport, mpd_client
+
+library mpd_client.lwt
+  src-dir: lwt
+  modules: mpd_client_lwt
+  pp: camlp4o
+  build-deps: mpd_client, lwt, lwt.syntax, lwt.unix
+
+library mpd_client.unix
+  src-dir: unix
+  modules: mpd_client_unix
+  build-deps: mpd_client
