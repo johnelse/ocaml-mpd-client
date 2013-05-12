@@ -5,19 +5,19 @@ module Make(Io: Mpd_transport.IO) = struct
 
   open Io
 
-  let rec really_write ~connection ~data ~offset ~length =
+  let rec really_write ~sock ~data ~offset ~length =
     if length = 0 then return () else
-      Io.write connection.sock data offset length
+      Io.write sock data offset length
       >>= (fun chars_written ->
-        really_write ~connection ~data
+        really_write ~sock ~data
           ~offset:(offset + chars_written)
           ~length:(length - chars_written))
 
-  let read_all ~connection =
+  let read_all ~sock =
     let read_length = 1024 in
     let read_data = String.create read_length in
     let rec read_all' ~buffer =
-      Io.read connection.sock read_data 0 read_length
+      Io.read sock read_data 0 read_length
       >>= (fun chars_read ->
         if chars_read = 0
         then return (Buffer.contents buffer)
@@ -35,5 +35,6 @@ module Make(Io: Mpd_transport.IO) = struct
   let send_raw ~connection ~data =
     let formatted_data = Printf.sprintf "%s\n" data in
     let length = String.length formatted_data in
-    really_write ~connection ~data:formatted_data ~offset:0 ~length
+    let sock = connection.sock in
+    really_write ~sock ~data:formatted_data ~offset:0 ~length
 end
