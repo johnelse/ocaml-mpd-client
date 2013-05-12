@@ -37,6 +37,25 @@ module Make(Io: Mpd_transport.IO) = struct
     let buffer = Buffer.create 0 in
     read_all' ~buffer
 
+  exception Bad_connection_response
+
+  let parse_connection_response ~response =
+    try
+      Scanf.sscanf response "OK MPD %s\n" (fun version -> version)
+    with Scanf.Scan_failure _ ->
+      raise Bad_connection_response
+
+  let connect ~addr =
+    Io.open_socket addr
+    >>= (fun sock ->
+      read_all ~sock
+      >>= (fun response ->
+        let version = parse_connection_response ~response in
+        return {
+          Connection.sock = sock;
+          version = version;
+        }))
+
   let send_raw ~connection ~data =
     let formatted_data = Printf.sprintf "%s\n" data in
     let length = String.length formatted_data in
