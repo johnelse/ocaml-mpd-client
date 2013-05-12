@@ -56,6 +56,10 @@ module Make(Io: Mpd_transport.IO) = struct
           version = version;
         }))
 
+  let disconnect ~connection =
+    let sock = connection.Connection.sock in
+    Io.close_socket sock
+
   let send_raw ~connection ~data =
     let formatted_data = Printf.sprintf "%s\n" data in
     let length = String.length formatted_data in
