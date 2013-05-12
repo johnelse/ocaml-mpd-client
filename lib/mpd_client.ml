@@ -1,7 +1,12 @@
 module Make(Io: Mpd_transport.IO) = struct
-  type connection_t = {
-    sock: Io.file_descr;
-  }
+  module Connection = struct
+    type t = {
+      sock: Io.file_descr;
+      version: string;
+    }
+
+    let version_of ~connection = connection.version
+  end
 
   open Io
 
@@ -35,6 +40,6 @@ module Make(Io: Mpd_transport.IO) = struct
   let send_raw ~connection ~data =
     let formatted_data = Printf.sprintf "%s\n" data in
     let length = String.length formatted_data in
-    let sock = connection.sock in
+    let sock = connection.Connection.sock in
     really_write ~sock ~data:formatted_data ~offset:0 ~length
 end
