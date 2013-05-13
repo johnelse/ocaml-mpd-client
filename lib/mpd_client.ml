@@ -56,13 +56,15 @@ module Make(Io: Mpd_transport.IO) = struct
           version = version;
         }))
 
-  let disconnect ~connection =
-    let sock = connection.Connection.sock in
-    Io.close_socket sock
-
   let send_raw ~connection ~data =
     let formatted_data = Printf.sprintf "%s\n" data in
     let length = String.length formatted_data in
     let sock = connection.Connection.sock in
     really_write ~sock ~data:formatted_data ~offset:0 ~length
+
+  let disconnect ~connection =
+    send_raw ~connection ~data:"close\n"
+    >>= (fun () ->
+      let sock = connection.Connection.sock in
+      Io.close_socket sock)
 end
