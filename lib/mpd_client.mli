@@ -4,5 +4,5 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   end
 
   val connect : addr:Io.sockaddr -> Connection.t Io.t
-  val disconnect : connection:Connection.t -> unit Io.t
+  val close : connection:Connection.t -> unit Io.t
 end
