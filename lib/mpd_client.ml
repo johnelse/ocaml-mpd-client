@@ -63,7 +63,7 @@ module Make(Io: Mpd_transport.IO) = struct
     really_write ~sock ~data:formatted_data ~offset:0 ~length
 
   let close ~connection =
-    send_raw ~connection ~data:"close\n"
+    send_raw ~connection ~data:"close"
     >>= (fun () ->
       let sock = connection.Connection.sock in
       Io.close_socket sock)
