@@ -1,0 +1,30 @@
+version = "0.1.0"
+description = "MPD client library"
+requires = ""
+archive(byte) = "mpd_client.cma"
+archive(byte, plugin) = "mpd_client.cma"
+archive(native) = "mpd_client.cmxa"
+archive(native, plugin) = "mpd_client.cmxs"
+exists_if = "mpd_client.cma"
+
+package "lwt" (
+  version = "0.1.0"
+  description = "MPD client library for Lwt"
+  requires = "mpd-client lwt lwt.syntax lwt.unix"
+  archive(byte) = "mpd_client_lwt.cma"
+  archive(byte, plugin) = "mpd_client_lwt.cma"
+  archive(native) = "mpd_client_lwt.cmxa"
+  archive(native, plugin) = "mpd_client_lwt.cmxs"
+  exists_if = "mpd_client_lwt.cma"
+)
+
+package "unix" (
+  version = "0.1.0"
+  description = "MPD client library for Unix"
+  requires = "mpd-client"
+  archive(byte) = "mpd_client_unix.cma"
+  archive(byte, plugin) = "mpd_client_unix.cma"
+  archive(native) = "mpd_client_unix.cmxa"
+  archive(native, plugin) = "mpd_client_unix.cmxs"
+  exists_if = "mpd_client_unix.cma"
+)
