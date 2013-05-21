@@ -5,7 +5,7 @@ obuild-ver: 1
 
 library mpd_client
   src-dir: lib
-  modules: mpd_transport, mpd_client
+  modules: mpd_parser, mpd_transport, mpd_client
 
 library mpd_client.lwt
   src-dir: lwt
