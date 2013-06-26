@@ -37,12 +37,14 @@ let parse_ack ~response =
     Parse_failure response
 
 let parse_ok ~response =
-  try
-    Scanf.sscanf response
-      "%s\nOK\n"
-      (fun body -> Ok (split body '\n'))
-  with Scanf.Scan_failure _ ->
-    Parse_failure response
+  let lines = split (String.trim response) '\n' in
+  let rec parse acc lines =
+    match lines with
+    | ["OK"] -> Ok (List.rev acc)
+    | line :: rest -> parse (line :: acc) rest
+    | _ -> Parse_failure response
+  in
+  parse [] lines
 
 let parse_response ~response =
   if String.sub response 0 3 = "ACK"
