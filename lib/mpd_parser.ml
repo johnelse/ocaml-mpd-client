@@ -20,7 +20,7 @@ type ack = {
 type response = 
   | Ack of ack
   | Ok of string list
-  | Bad_response of string
+  | Parse_failure of string
 
 let parse_ack ~response =
   try
@@ -34,7 +34,7 @@ let parse_ack ~response =
           message_text = message_text;
         })
   with Scanf.Scan_failure _ ->
-    Bad_response response
+    Parse_failure response
 
 let parse_ok ~response =
   try
@@ -42,7 +42,7 @@ let parse_ok ~response =
       "%s\nOK\n"
       (fun body -> Ok (split body '\n'))
   with Scanf.Scan_failure _ ->
-    Bad_response response
+    Parse_failure response
 
 let parse_response ~response =
   if String.sub response 0 3 = "ACK"
