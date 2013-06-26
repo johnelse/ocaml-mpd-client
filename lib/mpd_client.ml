@@ -38,6 +38,7 @@ module Make(Io: Mpd_transport.IO) = struct
     read_all' ~buffer
 
   exception Bad_connection_response
+  exception Bad_response of string
 
   let parse_connection_response ~response =
     try
@@ -62,9 +63,23 @@ module Make(Io: Mpd_transport.IO) = struct
     let sock = connection.Connection.sock in
     really_write ~sock ~data:formatted_data ~offset:0 ~length
 
+  let expect_ok ~connection =
+    let open Mpd_parser in
+    read_all ~sock:connection.Connection.sock
+    >>= (fun response ->
+      match parse_response ~response with
+      | Ok body -> return body
+      | _ -> raise (Bad_response response))
+
   let close ~connection =
     send_raw ~connection ~data:"close"
     >>= (fun () ->
       let sock = connection.Connection.sock in
       Io.close_socket sock)
+
+  let ping ~connection =
+    send_raw ~connection ~data:"ping"
+    >>= (fun () ->
+      ignore (expect_ok ~connection);
+      return ())
 end
