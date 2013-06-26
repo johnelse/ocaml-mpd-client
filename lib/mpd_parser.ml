@@ -17,7 +17,7 @@ type ack = {
   message_text: string;
 }
 
-type response = 
+type response =
   | Ack of ack
   | Ok of string list
   | Parse_failure of string
