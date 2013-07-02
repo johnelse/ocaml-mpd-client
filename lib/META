@@ -1,6 +1,6 @@
 version = "0.1.0"
 description = "MPD client library"
-requires = ""
+requires = "re.perl"
 archive(byte) = "mpd_client.cma"
 archive(byte, plugin) = "mpd_client.cma"
 archive(native) = "mpd_client.cmxa"

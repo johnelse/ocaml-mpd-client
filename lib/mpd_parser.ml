@@ -22,18 +22,19 @@ type response =
   | Ok of string list
   | Parse_failure of string
 
+let re_ack =
+  Re.compile (Re_perl.re "^ACK \\[([0-9]*)@([0-9]*)\\] \\{([a-z]*)\\} (.*)")
+
 let parse_ack ~response =
   try
-    Scanf.sscanf response
-      "ACK [%s@%d] {%s} %s\n"
-      (fun error command_num command message_text ->
-        Ack {
-          error = error;
-          command_num = command_num;
-          command = command;
-          message_text = message_text;
-        })
-  with Scanf.Scan_failure _ ->
+    let matches = Re.exec re_ack (String.trim response) in
+    Ack {
+      error = Re.get matches 1;
+      command_num = int_of_string (Re.get matches 2);
+      command = Re.get matches 3;
+      message_text = Re.get matches 4;
+    }
+  with Failure _ | Not_found ->
     Parse_failure response
 
 let parse_ok ~response =
