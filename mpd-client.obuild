@@ -18,3 +18,8 @@ library mpd_client.unix
   src-dir: unix
   modules: mpd_client_unix
   build-deps: mpd_client
+
+test test_parser
+  main: test_parser.ml
+  src-dir: test
+  build-deps: oUnit, mpd_client

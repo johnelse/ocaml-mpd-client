@@ -14,3 +14,6 @@ uninstall:
 .PHONY: clean test
 clean:
 	rm -rf dist
+
+test:
+	obuild test --output
