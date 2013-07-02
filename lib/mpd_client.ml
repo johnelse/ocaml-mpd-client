@@ -71,15 +71,17 @@ module Make(Io: Mpd_transport.IO) = struct
       | Ok body -> return body
       | _ -> raise (Bad_response response))
 
-  let close ~connection =
-    send_raw ~connection ~data:"close"
-    >>= (fun () ->
-      let sock = connection.Connection.sock in
-      Io.close_socket sock)
+  module Misc = struct
+    let close ~connection =
+      send_raw ~connection ~data:"close"
+      >>= (fun () ->
+        let sock = connection.Connection.sock in
+        Io.close_socket sock)
 
-  let ping ~connection =
-    send_raw ~connection ~data:"ping"
-    >>= (fun () ->
-      ignore (expect_ok ~connection);
-      return ())
+    let ping ~connection =
+      send_raw ~connection ~data:"ping"
+      >>= (fun () ->
+        ignore (expect_ok ~connection);
+        return ())
+  end
 end
