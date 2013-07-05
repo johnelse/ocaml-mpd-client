@@ -38,6 +38,7 @@ module Make(Io: Mpd_transport.IO) = struct
     read_all' ~buffer
 
   exception Bad_connection_response
+  exception Received_ack of Mpd_parser.ack
   exception Bad_response of string
 
   let parse_connection_response ~response =
@@ -69,6 +70,7 @@ module Make(Io: Mpd_transport.IO) = struct
     >>= (fun response ->
       match parse_response ~response with
       | Ok body -> return body
+      | Ack ack -> raise (Received_ack ack)
       | _ -> raise (Bad_response response))
 
   module Info = struct
