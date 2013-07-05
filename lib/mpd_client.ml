@@ -85,6 +85,14 @@ module Make(Io: Mpd_transport.IO) = struct
     let notcommands ~connection =
       send_raw_get_response ~connection ~data:"notcommands"
       >|= List.map snd
+
+    let tagtypes ~connection =
+      send_raw_get_response ~connection ~data:"tagtypes"
+      >|= List.map snd
+
+    let urlhandlers ~connection =
+      send_raw_get_response ~connection ~data:"urlhandlers"
+      >|= List.map snd
   end
 
   module Misc = struct

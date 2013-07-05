@@ -9,6 +9,8 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   module Info : sig
     val commands : connection:Connection.t -> string list Io.t
     val notcommands : connection:Connection.t -> string list Io.t
+    val tagtypes : connection:Connection.t -> string list Io.t
+    val urlhandlers : connection:Connection.t -> string list Io.t
   end
 
   module Misc : sig
