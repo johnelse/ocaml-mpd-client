@@ -73,18 +73,18 @@ module Make(Io: Mpd_transport.IO) = struct
       | Ack ack -> raise (Received_ack ack)
       | _ -> raise (Bad_response response))
 
+  let send_raw_get_response ~connection ~data =
+    send_raw ~connection ~data
+    >>= (fun () -> expect_ok ~connection)
+
   module Info = struct
     let commands ~connection =
-      send_raw ~connection ~data:"commands"
-      >>= (fun () ->
-        expect_ok ~connection
-        >|= List.map snd)
+      send_raw_get_response ~connection ~data:"commands"
+      >|= List.map snd
 
     let notcommands ~connection =
-      send_raw ~connection ~data:"notcommands"
-      >>= (fun () ->
-        expect_ok ~connection
-        >|= List.map snd)
+      send_raw_get_response ~connection ~data:"notcommands"
+      >|= List.map snd
   end
 
   module Misc = struct
