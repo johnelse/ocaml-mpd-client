@@ -19,7 +19,7 @@ type ack = {
 
 type response =
   | Ack of ack
-  | Ok of string list
+  | Ok of (string * string) list
   | Parse_failure of string
 
 let re_ack =
@@ -42,7 +42,19 @@ let parse_ok ~response =
   let rec parse acc lines =
     match lines with
     | ["OK"] -> Ok (List.rev acc)
-    | line :: rest -> parse (line :: acc) rest
+    | line :: rest ->
+      begin
+        try
+          let split_point = String.index line ':' in
+          let label = String.sub line 0 split_point in
+          let value =
+            String.sub line
+              (split_point + 2)
+              ((String.length line) - (split_point + 2))
+          in
+          parse ((label, value) :: acc) rest
+        with Not_found -> Parse_failure response
+      end
     | _ -> Parse_failure response
   in
   parse [] lines
