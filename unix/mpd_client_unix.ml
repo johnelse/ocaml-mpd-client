@@ -1,6 +1,7 @@
 module Io = struct
   type 'a t = 'a
   let (>>=) x f = f x
+  let (>|=) x f = f x
   let return x = x
 
   type sockaddr = Unix.sockaddr

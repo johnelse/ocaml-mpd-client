@@ -71,6 +71,20 @@ module Make(Io: Mpd_transport.IO) = struct
       | Ok body -> return body
       | _ -> raise (Bad_response response))
 
+  module Info = struct
+    let commands ~connection =
+      send_raw ~connection ~data:"commands"
+      >>= (fun () ->
+        expect_ok ~connection
+        >|= List.map snd)
+
+    let notcommands ~connection =
+      send_raw ~connection ~data:"notcommands"
+      >>= (fun () ->
+        expect_ok ~connection
+        >|= List.map snd)
+  end
+
   module Misc = struct
     let close ~connection =
       send_raw ~connection ~data:"close"

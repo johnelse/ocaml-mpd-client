@@ -1,6 +1,7 @@
 module Io = struct
   type 'a t = 'a Lwt.t
   let (>>=) = Lwt.bind
+  let (>|=) = Lwt.(>|=)
   let return = Lwt.return
 
   type sockaddr = Lwt_unix.sockaddr
