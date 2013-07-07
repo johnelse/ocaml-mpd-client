@@ -87,7 +87,7 @@ module Make(Io: Mpd_transport.IO) = struct
 
     let stats ~connection =
       send_raw_get_response ~connection ~data:"stats"
-      >|= Mpd_types.stats_of_kvpairs
+      >|= Mpd_types.Stats.of_kvpairs
 
     let tagtypes ~connection =
       send_raw_get_response ~connection ~data:"tagtypes"
