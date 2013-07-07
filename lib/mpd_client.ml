@@ -85,6 +85,10 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:"notcommands"
       >|= List.map snd
 
+    let stats ~connection =
+      send_raw_get_response ~connection ~data:"stats"
+      >|= Mpd_types.stats_of_kvpairs
+
     let tagtypes ~connection =
       send_raw_get_response ~connection ~data:"tagtypes"
       >|= List.map snd

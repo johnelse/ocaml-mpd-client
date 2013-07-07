@@ -29,6 +29,8 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  the current user. *)
     val notcommands : connection:Connection.t -> string list Io.t
 
+    val stats : connection:Connection.t -> Mpd_types.stats Io.t
+
     (** [tagtypes connection] returns the list of available song metadata. *)
     val tagtypes : connection:Connection.t -> string list Io.t
 
