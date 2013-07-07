@@ -8,7 +8,6 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     val version_of : connection:t -> string
   end
 
-  exception Bad_connection_response
   exception Received_ack of Mpd_parser.ack
   exception Bad_response of string
 

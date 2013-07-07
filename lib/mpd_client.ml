@@ -37,7 +37,6 @@ module Make(Io: Mpd_transport.IO) = struct
     let buffer = Buffer.create 0 in
     read_all' ~buffer
 
-  exception Bad_connection_response
   exception Received_ack of Mpd_parser.ack
   exception Bad_response of string
 
@@ -45,7 +44,7 @@ module Make(Io: Mpd_transport.IO) = struct
     try
       Scanf.sscanf response "OK MPD %s\n" (fun version -> version)
     with Scanf.Scan_failure _ ->
-      raise Bad_connection_response
+      raise (Bad_response response)
 
   let connect ~addr =
     Io.open_socket addr
