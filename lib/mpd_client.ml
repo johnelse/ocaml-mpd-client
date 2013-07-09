@@ -58,7 +58,7 @@ module Make(Io: Mpd_transport.IO) = struct
         }))
 
   let send_raw ~connection ~data =
-    let formatted_data = Printf.sprintf "%s\n" data in
+    let formatted_data = Printf.sprintf "%s\n" (String.concat " " data) in
     let length = String.length formatted_data in
     let sock = connection.Connection.sock in
     really_write ~sock ~data:formatted_data ~offset:0 ~length
@@ -78,39 +78,39 @@ module Make(Io: Mpd_transport.IO) = struct
 
   module Info = struct
     let commands ~connection =
-      send_raw_get_response ~connection ~data:"commands"
+      send_raw_get_response ~connection ~data:["commands"]
       >|= List.map snd
 
     let notcommands ~connection =
-      send_raw_get_response ~connection ~data:"notcommands"
+      send_raw_get_response ~connection ~data:["notcommands"]
       >|= List.map snd
 
     let outputs ~connection =
-      send_raw_get_response ~connection ~data:"outputs"
+      send_raw_get_response ~connection ~data:["outputs"]
       >|= Mpd_types.Output.multiple_of_kvpairs
 
     let stats ~connection =
-      send_raw_get_response ~connection ~data:"stats"
+      send_raw_get_response ~connection ~data:["stats"]
       >|= Mpd_types.Stats.of_kvpairs
 
     let tagtypes ~connection =
-      send_raw_get_response ~connection ~data:"tagtypes"
+      send_raw_get_response ~connection ~data:["tagtypes"]
       >|= List.map snd
 
     let urlhandlers ~connection =
-      send_raw_get_response ~connection ~data:"urlhandlers"
+      send_raw_get_response ~connection ~data:["urlhandlers"]
       >|= List.map snd
   end
 
   module Misc = struct
     let close ~connection =
-      send_raw ~connection ~data:"close"
+      send_raw ~connection ~data:["close"]
       >>= (fun () ->
         let sock = connection.Connection.sock in
         Io.close_socket sock)
 
     let ping ~connection =
-      send_raw ~connection ~data:"ping"
+      send_raw ~connection ~data:["ping"]
       >>= (fun () ->
         ignore (expect_ok ~connection);
         return ())
