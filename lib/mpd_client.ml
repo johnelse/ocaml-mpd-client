@@ -76,6 +76,18 @@ module Make(Io: Mpd_transport.IO) = struct
     send_raw ~connection ~data
     >>= (fun () -> expect_ok ~connection)
 
+  module Admin = struct
+    let disableoutput ~connection ~outputid =
+      send_raw_get_response
+        ~connection ~data:["disableoutput"; string_of_int outputid]
+      >|= ignore
+
+    let enableoutput ~connection ~outputid =
+      send_raw_get_response
+        ~connection ~data:["enableoutput"; string_of_int outputid]
+      >|= ignore
+  end
+
   module Info = struct
     let commands ~connection =
       send_raw_get_response ~connection ~data:["commands"]

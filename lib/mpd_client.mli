@@ -20,6 +20,16 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
    *  address [addr]. *)
   val connect : addr:Io.sockaddr -> Connection.t Io.t
 
+  module Admin : sig
+    (** [disableoutput connection outputid] disables the output with id
+     *  outputid. *)
+    val disableoutput : connection:Connection.t -> outputid:int -> unit Io.t
+
+    (** [enableoutput connection outputid] enables the output with id
+     *  outputid. *)
+    val enableoutput : connection:Connection.t -> outputid:int -> unit Io.t
+  end
+
   module Info : sig
     (** [commands connection] returns the list of commands available to the
      *  current user. *)
