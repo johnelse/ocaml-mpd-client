@@ -29,6 +29,9 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  the current user. *)
     val notcommands : connection:Connection.t -> string list Io.t
 
+    (** [outputs connection] returns information about all available outputs. *)
+    val outputs : connection:Connection.t -> Mpd_types.Output.t list Io.t
+
     (** [stats connection] returns statistics for the connected MPD. *)
     val stats : connection:Connection.t -> Mpd_types.Stats.t Io.t
 

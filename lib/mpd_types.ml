@@ -18,6 +18,33 @@ let make_reader kvpairs =
     end
     else raise (Missing_key key))
 
+module Output = struct
+  type t = {
+    outputid: int;
+    outputname: string;
+    outputenabled: bool;
+  }
+
+  let of_kvpairs kvpairs =
+    let read = make_reader kvpairs in
+    {
+      outputid = int_of_string (read "outputid");
+      outputname = read "outputname";
+      outputenabled =
+        match read "outputenabled" with "1" -> true | _ -> false;
+    }
+
+  let multiple_of_kvpairs kvpairs =
+    let rec read_all acc kvpairs =
+      match kvpairs with
+      | a :: b :: c :: rest ->
+        let output = of_kvpairs [a; b; c] in
+        read_all (output :: acc) rest
+      | _ -> acc
+    in
+    List.rev (read_all [] kvpairs)
+end
+
 module Stats = struct
   type t = {
     artists: int;
