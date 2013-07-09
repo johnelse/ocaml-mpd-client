@@ -122,9 +122,7 @@ module Make(Io: Mpd_transport.IO) = struct
         Io.close_socket sock)
 
     let ping ~connection =
-      send_raw ~connection ~data:["ping"]
-      >>= (fun () ->
-        ignore (expect_ok ~connection);
-        return ())
+      send_raw_get_response ~connection ~data:["ping"]
+      >|= ignore
   end
 end
