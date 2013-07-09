@@ -22,11 +22,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
 
   module Admin : sig
     (** [disableoutput connection outputid] disables the output with id
-     *  outputid. *)
+     *  [outputid]. *)
     val disableoutput : connection:Connection.t -> outputid:int -> unit Io.t
 
     (** [enableoutput connection outputid] enables the output with id
-     *  outputid. *)
+     *  [outputid]. *)
     val enableoutput : connection:Connection.t -> outputid:int -> unit Io.t
   end
 
