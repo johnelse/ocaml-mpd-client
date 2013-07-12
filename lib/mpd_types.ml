@@ -1,22 +1,8 @@
 exception Missing_key of string
 
-let make_reader kvpairs =
-  (* Reversing the list is a bit of a hack - assignments to the record are
-   * evaluated in reverse order compared to the record field definitions. *)
-  let cache = ref (List.rev kvpairs) in
-  (fun key ->
-    let remaining_kvpairs = !cache in
-    let (key', value) =
-      try List.hd remaining_kvpairs
-      with Failure "hd" ->
-        raise (Missing_key key)
-    in
-    if key = key'
-    then begin
-      cache := List.tl remaining_kvpairs;
-      value
-    end
-    else raise (Missing_key key))
+let find key kvpairs =
+  try List.assoc key kvpairs
+  with Not_found -> raise (Missing_key key)
 
 module Output = struct
   type t = {
@@ -26,12 +12,11 @@ module Output = struct
   }
 
   let of_kvpairs kvpairs =
-    let read = make_reader kvpairs in
     {
-      outputid = int_of_string (read "outputid");
-      outputname = read "outputname";
+      outputid = int_of_string (find "outputid" kvpairs);
+      outputname = find "outputname" kvpairs;
       outputenabled =
-        match read "outputenabled" with "1" -> true | _ -> false;
+        match find "outputenabled" kvpairs with "1" -> true | _ -> false;
     }
 
   let multiple_of_kvpairs kvpairs =
@@ -57,14 +42,13 @@ module Stats = struct
   }
 
   let of_kvpairs kvpairs =
-    let read = make_reader kvpairs in
     {
-      artists = int_of_string (read "artists");
-      albums = int_of_string (read "albums");
-      songs = int_of_string (read "songs");
-      uptime = int_of_string (read "uptime");
-      playtime = int_of_string (read "playtime");
-      db_playtime = Int64.of_string (read "db_playtime");
-      db_update = Int64.of_string (read "db_update");
+      artists = int_of_string (find "artists" kvpairs);
+      albums = int_of_string (find "albums" kvpairs);
+      songs = int_of_string (find "songs" kvpairs);
+      uptime = int_of_string (find "uptime" kvpairs);
+      playtime = int_of_string (find "playtime" kvpairs);
+      db_playtime = Int64.of_string (find "db_playtime" kvpairs);
+      db_update = Int64.of_string (find "db_update" kvpairs);
     }
 end
