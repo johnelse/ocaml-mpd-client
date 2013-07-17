@@ -45,6 +45,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [stats connection] returns statistics for the connected MPD. *)
     val stats : connection:Connection.t -> Mpd_types.Stats.t Io.t
 
+    (** [status connection] returns the playback status and volume
+     *  level of MPD. *)
+    val status : connection:Connection.t -> Mpd_types.Status.t Io.t
+
     (** [tagtypes connection] returns the list of available song metadata. *)
     val tagtypes : connection:Connection.t -> string list Io.t
 

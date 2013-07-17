@@ -105,6 +105,10 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["stats"]
       >|= Mpd_types.Stats.of_kvpairs
 
+    let status ~connection =
+      send_raw_get_response ~connection ~data:["status"]
+      >|= Mpd_types.Status.of_kvpairs
+
     let tagtypes ~connection =
       send_raw_get_response ~connection ~data:["tagtypes"]
       >|= List.map snd
