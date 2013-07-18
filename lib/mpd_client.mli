@@ -73,6 +73,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  in the current playlist. *)
     val next : connection:Connection.t -> unit Io.t
 
+    (** [pause connection flag] pauses or unpauses the connected MPD, if the
+     *  flag is true or false respectively. *)
+    val pause : connection:Connection.t -> flag:bool -> unit Io.t
+
     (** [previous connection] commands the connected MPD to play the previous
      *  song in the current playlist. *)
     val previous : connection:Connection.t -> unit Io.t

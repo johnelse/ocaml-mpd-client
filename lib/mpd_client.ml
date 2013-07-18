@@ -135,6 +135,11 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["next"]
       >|= ignore
 
+    let pause ~connection ~flag =
+      let arg = if flag then "1" else "0" in
+      send_raw_get_response ~connection ~data:["pause"; arg]
+      >|= ignore
+
     let previous ~connection =
       send_raw_get_response ~connection ~data:["previous"]
       >|= ignore
