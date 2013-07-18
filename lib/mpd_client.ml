@@ -76,6 +76,9 @@ module Make(Io: Mpd_transport.IO) = struct
     send_raw ~connection ~data
     >>= (fun () -> expect_ok ~connection)
 
+  let string_of_flag = function
+    | true -> "1" | false -> "0"
+
   module Admin = struct
     let disableoutput ~connection ~outputid =
       send_raw_get_response
@@ -136,12 +139,19 @@ module Make(Io: Mpd_transport.IO) = struct
       >|= ignore
 
     let pause ~connection ~flag =
-      let arg = if flag then "1" else "0" in
-      send_raw_get_response ~connection ~data:["pause"; arg]
+      send_raw_get_response ~connection ~data:["pause"; string_of_flag flag]
       >|= ignore
 
     let previous ~connection =
       send_raw_get_response ~connection ~data:["previous"]
+      >|= ignore
+
+    let random ~connection ~flag =
+      send_raw_get_response ~connection ~data:["random"; string_of_flag flag]
+      >|= ignore
+
+    let repeat ~connection ~flag =
+      send_raw_get_response ~connection ~data:["repeat"; string_of_flag flag]
       >|= ignore
   end
 end

@@ -80,5 +80,13 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [previous connection] commands the connected MPD to play the previous
      *  song in the current playlist. *)
     val previous : connection:Connection.t -> unit Io.t
+
+    (** [random connection flag] turns random playback on or off, depending
+     *  on the value of [flag]. *)
+    val random : connection:Connection.t -> flag:bool -> unit Io.t
+
+    (** [random connection flag] turns repeat playback on or off, depending
+     *  on the value of [flag]. *)
+    val repeat : connection:Connection.t -> flag:bool -> unit Io.t
   end
 end
