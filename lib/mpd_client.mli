@@ -67,4 +67,14 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  unit if MPD is responsive, otherwise will raise an exception. *)
     val ping : connection:Connection.t -> unit Io.t
   end
+
+  module Playback : sig
+    (** [next connection] commands the connected MPD to play the next song
+     *  in the current playlist. *)
+    val next : connection:Connection.t -> unit Io.t
+
+    (** [previous connection] commands the connected MPD to play the previous
+     *  song in the current playlist. *)
+    val previous : connection:Connection.t -> unit Io.t
+  end
 end

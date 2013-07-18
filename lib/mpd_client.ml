@@ -129,4 +129,14 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["ping"]
       >|= ignore
   end
+
+  module Playback = struct
+    let next ~connection =
+      send_raw_get_response ~connection ~data:["next"]
+      >|= ignore
+
+    let previous ~connection =
+      send_raw_get_response ~connection ~data:["previous"]
+      >|= ignore
+  end
 end
