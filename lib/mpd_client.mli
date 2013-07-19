@@ -88,5 +88,8 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [random connection flag] turns repeat playback on or off, depending
      *  on the value of [flag]. *)
     val repeat : connection:Connection.t -> flag:bool -> unit Io.t
+
+    (** [stop connection] commands the connected MPD to stop playback. *)
+    val stop : connection:Connection.t -> unit Io.t
   end
 end

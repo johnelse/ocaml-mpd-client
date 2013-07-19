@@ -153,5 +153,9 @@ module Make(Io: Mpd_transport.IO) = struct
     let repeat ~connection ~flag =
       send_raw_get_response ~connection ~data:["repeat"; string_of_flag flag]
       >|= ignore
+
+    let stop ~connection =
+      send_raw_get_response ~connection ~data:["stop"]
+      >|= ignore
   end
 end
