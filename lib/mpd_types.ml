@@ -140,7 +140,7 @@ module Status = struct
             | _ -> raise (Unexpected_value ("time", str)))
           (find_opt "time" kvpairs);
       elapsed_highres = map_opt float_of_string (find_opt "elapsed" kvpairs);
-      bitrate = map_opt int_of_string (find_opt "elapsed" kvpairs);
+      bitrate = map_opt int_of_string (find_opt "bitrate" kvpairs);
       audio =
         map_opt
           (fun str ->
