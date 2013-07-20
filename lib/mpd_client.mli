@@ -93,6 +93,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  position [time] in song [song] in the current playlist. *)
     val seek : connection:Connection.t -> song:int -> time:int -> unit Io.t
 
+    (** [seekid connection songid time] instructs the connected MPD to skip to
+     *  position [time] in the song in the current playlist
+     *  given by [songid]. *)
+    val seekid : connection:Connection.t -> songid:int -> time:int -> unit Io.t
+
     (** [stop connection] commands the connected MPD to stop playback. *)
     val stop : connection:Connection.t -> unit Io.t
   end

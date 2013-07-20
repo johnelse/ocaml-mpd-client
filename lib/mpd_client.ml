@@ -159,6 +159,11 @@ module Make(Io: Mpd_transport.IO) = struct
         ~data:["seek"; string_of_int song; string_of_int time]
       >|= ignore
 
+    let seekid ~connection ~songid ~time =
+      send_raw_get_response ~connection
+        ~data:["seekid"; string_of_int songid; string_of_int time]
+      >|= ignore
+
     let stop ~connection =
       send_raw_get_response ~connection ~data:["stop"]
       >|= ignore
