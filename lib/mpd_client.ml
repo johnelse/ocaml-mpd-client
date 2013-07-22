@@ -146,6 +146,10 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["pause"; string_of_flag flag]
       >|= ignore
 
+    let play ~connection ~song =
+      send_raw_get_response ~connection ~data:["play"; string_of_int song]
+      >|= ignore
+
     let previous ~connection =
       send_raw_get_response ~connection ~data:["previous"]
       >|= ignore
