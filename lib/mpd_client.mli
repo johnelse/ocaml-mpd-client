@@ -98,6 +98,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  given by [songid]. *)
     val seekid : connection:Connection.t -> songid:int -> time:int -> unit Io.t
 
+    (** [single connection flag] turns single-track playback on or off,
+     *  depending on the value of [flag]. *)
+    val single : connection:Connection.t -> flag:bool -> unit Io.t
+
     (** [stop connection] commands the connected MPD to stop playback. *)
     val stop : connection:Connection.t -> unit Io.t
   end
