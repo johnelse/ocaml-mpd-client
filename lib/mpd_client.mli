@@ -69,6 +69,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   end
 
   module Playback : sig
+    (** [consume flag] turns consume mode on or off, which determines
+     *  whether or not songs are removed from the current playlist once
+     *  played. *)
+    val consume : connection:Connection.t -> flag:bool -> unit Io.t
+
     (** [next connection] commands the connected MPD to play the next song
      *  in the current playlist. *)
     val next : connection:Connection.t -> unit Io.t

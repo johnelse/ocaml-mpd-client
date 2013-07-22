@@ -134,6 +134,10 @@ module Make(Io: Mpd_transport.IO) = struct
   end
 
   module Playback = struct
+    let consume ~connection ~flag =
+      send_raw_get_response ~connection ~data:["consume"; string_of_flag flag]
+      >|= ignore
+
     let next ~connection =
       send_raw_get_response ~connection ~data:["next"]
       >|= ignore
