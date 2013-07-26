@@ -137,6 +137,10 @@ module Make(Io: Mpd_transport.IO) = struct
     let add ~connection ~uri =
       send_raw_get_response ~connection ~data:["add"; uri]
       >|= ignore
+
+    let clear ~connection =
+      send_raw_get_response ~connection ~data:["clear"]
+      >|= ignore
   end
 
   module Playback = struct
