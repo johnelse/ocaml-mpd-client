@@ -68,6 +68,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     val ping : connection:Connection.t -> unit Io.t
   end
 
+  module Playlist : sig
+    val add : connection:Connection.t -> uri:string -> unit Io.t
+  end
+
   module Playback : sig
     (** [consume flag] turns consume mode on or off, which determines
      *  whether or not songs are removed from the current playlist once
