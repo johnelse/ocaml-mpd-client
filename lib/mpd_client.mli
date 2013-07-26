@@ -69,6 +69,9 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   end
 
   module Playlist : sig
+    (** [add connection uri] recursively adds file [uri] to the end of the
+     *  current playlist. If [uri] is a directory, then all files in that
+     *  directory will be added recursively. *)
     val add : connection:Connection.t -> uri:string -> unit Io.t
   end
 
