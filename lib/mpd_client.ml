@@ -190,6 +190,14 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["add"; uri]
       >|= ignore
 
+    let addid ~connection ~uri ~position =
+      let data =
+        ["addid"; uri] @
+        (match position with Some x -> [string_of_int x] | None -> [])
+      in
+      send_raw_get_response ~connection ~data
+      >|= (fun response -> int_of_string (snd (List.nth response 0)))
+
     let clear ~connection =
       send_raw_get_response ~connection ~data:["clear"]
       >|= ignore

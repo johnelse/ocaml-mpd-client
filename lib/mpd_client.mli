@@ -128,6 +128,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  directory will be added recursively. *)
     val add : connection:Connection.t -> uri:string -> unit Io.t
 
+    (** [addid connection uri position] adds file [uri] to the playlist at
+     *  position [position], and returns the songid. *)
+    val addid : connection:Connection.t ->
+      uri:string -> position:(int option) -> int Io.t
+
     (** [clear connection] clears all tracks from the current playlist. *)
     val clear : connection:Connection.t -> unit Io.t
 
