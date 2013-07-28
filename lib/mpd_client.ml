@@ -186,13 +186,15 @@ module Make(Io: Mpd_transport.IO) = struct
       | Single of int
       | Range of (int * int)
 
+    let quote str = "\"" ^ str ^ "\""
+
     let add ~connection ~uri =
-      send_raw_get_response ~connection ~data:["add"; uri]
+      send_raw_get_response ~connection ~data:["add"; quote uri]
       >|= ignore
 
     let addid ~connection ~uri ~position =
       let data =
-        ["addid"; uri] @
+        ["addid"; quote uri] @
         (match position with Some x -> [string_of_int x] | None -> [])
       in
       send_raw_get_response ~connection ~data
