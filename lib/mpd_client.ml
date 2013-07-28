@@ -201,5 +201,9 @@ module Make(Io: Mpd_transport.IO) = struct
       in
       send_raw_get_response ~connection ~data:["delete"; selection_string]
       >|= ignore
+
+    let deleteid ~connection ~songid =
+      send_raw_get_response ~connection ~data:["deleteid"; string_of_int songid]
+      >|= ignore
   end
 end

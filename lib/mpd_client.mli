@@ -134,5 +134,9 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [delete connection selection] deletes the tracks indicated by
      *  [selection] from the current playlist. *)
     val delete : connection:Connection.t -> selection:selection -> unit Io.t
+
+    (** [deleteid connection songid] deletes song [songid] from the current
+     *  playlist. *)
+    val deleteid : connection:Connection.t -> songid:int -> unit Io.t
   end
 end
