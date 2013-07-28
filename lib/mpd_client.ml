@@ -133,28 +133,6 @@ module Make(Io: Mpd_transport.IO) = struct
       >|= ignore
   end
 
-  module Playlist = struct
-    type selection =
-      | Single of int
-      | Range of (int * int)
-
-    let add ~connection ~uri =
-      send_raw_get_response ~connection ~data:["add"; uri]
-      >|= ignore
-
-    let clear ~connection =
-      send_raw_get_response ~connection ~data:["clear"]
-      >|= ignore
-
-    let delete ~connection ~selection =
-      let selection_string = match selection with
-      | Single x -> string_of_int x
-      | Range (first, last) -> Printf.sprintf "%d:%d" first last
-      in
-      send_raw_get_response ~connection ~data:["delete"; selection_string]
-      >|= ignore
-  end
-
   module Playback = struct
     let consume ~connection ~flag =
       send_raw_get_response ~connection ~data:["consume"; string_of_flag flag]
@@ -200,6 +178,28 @@ module Make(Io: Mpd_transport.IO) = struct
 
     let stop ~connection =
       send_raw_get_response ~connection ~data:["stop"]
+      >|= ignore
+  end
+
+  module Playlist = struct
+    type selection =
+      | Single of int
+      | Range of (int * int)
+
+    let add ~connection ~uri =
+      send_raw_get_response ~connection ~data:["add"; uri]
+      >|= ignore
+
+    let clear ~connection =
+      send_raw_get_response ~connection ~data:["clear"]
+      >|= ignore
+
+    let delete ~connection ~selection =
+      let selection_string = match selection with
+      | Single x -> string_of_int x
+      | Range (first, last) -> Printf.sprintf "%d:%d" first last
+      in
+      send_raw_get_response ~connection ~data:["delete"; selection_string]
       >|= ignore
   end
 end

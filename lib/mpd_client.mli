@@ -68,27 +68,6 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     val ping : connection:Connection.t -> unit Io.t
   end
 
-  module Playlist : sig
-    (** Represents a selection of songs in a playlist. The [Range] variant
-     *  represents the selection of all tracks from the first index (inclusive)
-     *  to the last index (exclusive). *)
-    type selection =
-      | Single of int
-      | Range of (int * int)
-
-    (** [add connection uri] recursively adds file [uri] to the end of the
-     *  current playlist. If [uri] is a directory, then all files in that
-     *  directory will be added recursively. *)
-    val add : connection:Connection.t -> uri:string -> unit Io.t
-
-    (** [clear connection] clears all tracks from the current playlist. *)
-    val clear : connection:Connection.t -> unit Io.t
-
-    (** [delete connection selection] deletes the tracks indicated by
-     *  [selection] from the current playlist. *)
-    val delete : connection:Connection.t -> selection:selection -> unit Io.t
-  end
-
   module Playback : sig
     (** [consume flag] turns consume mode on or off, which determines
      *  whether or not songs are removed from the current playlist once
@@ -134,5 +113,26 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
 
     (** [stop connection] commands the connected MPD to stop playback. *)
     val stop : connection:Connection.t -> unit Io.t
+  end
+
+  module Playlist : sig
+    (** Represents a selection of songs in a playlist. The [Range] variant
+     *  represents the selection of all tracks from the first index (inclusive)
+     *  to the last index (exclusive). *)
+    type selection =
+      | Single of int
+      | Range of (int * int)
+
+    (** [add connection uri] recursively adds file [uri] to the end of the
+     *  current playlist. If [uri] is a directory, then all files in that
+     *  directory will be added recursively. *)
+    val add : connection:Connection.t -> uri:string -> unit Io.t
+
+    (** [clear connection] clears all tracks from the current playlist. *)
+    val clear : connection:Connection.t -> unit Io.t
+
+    (** [delete connection selection] deletes the tracks indicated by
+     *  [selection] from the current playlist. *)
+    val delete : connection:Connection.t -> selection:selection -> unit Io.t
   end
 end
