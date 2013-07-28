@@ -134,12 +134,24 @@ module Make(Io: Mpd_transport.IO) = struct
   end
 
   module Playlist = struct
+    type selection =
+      | Single of int
+      | Range of (int * int)
+
     let add ~connection ~uri =
       send_raw_get_response ~connection ~data:["add"; uri]
       >|= ignore
 
     let clear ~connection =
       send_raw_get_response ~connection ~data:["clear"]
+      >|= ignore
+
+    let delete ~connection ~selection =
+      let selection_string = match selection with
+      | Single x -> string_of_int x
+      | Range (first, last) -> Printf.sprintf "%d:%d" first last
+      in
+      send_raw_get_response ~connection ~data:["delete"; selection_string]
       >|= ignore
   end
 

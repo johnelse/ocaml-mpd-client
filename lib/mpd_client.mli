@@ -69,6 +69,13 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   end
 
   module Playlist : sig
+    (** Represents a selection of songs in a playlist. The [Range] variant
+     *  represents the selection of all tracks from the first index (inclusive)
+     *  to the last index (exclusive). *)
+    type selection =
+      | Single of int
+      | Range of (int * int)
+
     (** [add connection uri] recursively adds file [uri] to the end of the
      *  current playlist. If [uri] is a directory, then all files in that
      *  directory will be added recursively. *)
@@ -76,6 +83,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
 
     (** [clear connection] clears all tracks from the current playlist. *)
     val clear : connection:Connection.t -> unit Io.t
+
+    (** [delete connection selection] deletes the tracks indicated by
+     *  [selection] from the current playlist. *)
+    val delete : connection:Connection.t -> selection:selection -> unit Io.t
   end
 
   module Playback : sig
