@@ -1,3 +1,11 @@
+(** Receiving an ACK from MPD indicates that an error occurred, possibly
+ *  because MPD couldn't understand the command we sent it. *)
+exception Received_ack of Mpd_parser.ack
+
+(** Bad_response will be raised if we could't parse the response received
+ *  from MPD as an OK or an ACK. *)
+exception Bad_response of string
+
 module Make : functor (Io: Mpd_transport.IO) -> sig
   module Connection : sig
     (** Abstract type of connections to an MPD process. *)
@@ -7,14 +15,6 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  when [connection] was established. *)
     val version_of : connection:t -> string
   end
-
-  (** Receiving an ACK from MPD indicates that an error occurred, possibly
-   *  because MPD couldn't understand the command we sent it. *)
-  exception Received_ack of Mpd_parser.ack
-
-  (** Bad_response will be raised if we could't parse the response received
-   *  from MPD as an OK or an ACK. *)
-  exception Bad_response of string
 
   (** [connect addr] opens a connection with an MPD process listening on
    *  address [addr]. *)

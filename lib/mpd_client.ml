@@ -1,3 +1,6 @@
+exception Received_ack of Mpd_parser.ack
+exception Bad_response of string
+
 module Make(Io: Mpd_transport.IO) = struct
   module Connection = struct
     type t = {
@@ -36,9 +39,6 @@ module Make(Io: Mpd_transport.IO) = struct
     in
     let buffer = Buffer.create 0 in
     read_all' ~buffer
-
-  exception Received_ack of Mpd_parser.ack
-  exception Bad_response of string
 
   let parse_connection_response ~response =
     try
