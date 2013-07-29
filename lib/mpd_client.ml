@@ -186,6 +186,10 @@ module Make(Io: Mpd_transport.IO) = struct
       | Single of int
       | Range of (int * int)
 
+    let string_of_selection = function
+      | Single x -> string_of_int x
+      | Range (first, last) -> Printf.sprintf "%d:%d" first last
+
     let quote str = "\"" ^ str ^ "\""
 
     let add ~connection ~uri =
@@ -205,15 +209,17 @@ module Make(Io: Mpd_transport.IO) = struct
       >|= ignore
 
     let delete ~connection ~selection =
-      let selection_string = match selection with
-      | Single x -> string_of_int x
-      | Range (first, last) -> Printf.sprintf "%d:%d" first last
-      in
-      send_raw_get_response ~connection ~data:["delete"; selection_string]
+      send_raw_get_response ~connection
+        ~data:["delete"; string_of_selection selection]
       >|= ignore
 
     let deleteid ~connection ~songid =
       send_raw_get_response ~connection ~data:["deleteid"; string_of_int songid]
+      >|= ignore
+
+    let move ~connection ~selection ~position =
+      send_raw_get_response ~connection
+        ~data:["move"; string_of_selection selection; string_of_int position]
       >|= ignore
   end
 end
