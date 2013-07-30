@@ -226,5 +226,10 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection
         ~data:["moveid"; string_of_int songid; string_of_int position]
       >|= ignore
+
+    let swap ~connection ~position1 ~position2 =
+      send_raw_get_response ~connection
+        ~data:["swap"; string_of_int position1; string_of_int position2]
+      >|= ignore
   end
 end
