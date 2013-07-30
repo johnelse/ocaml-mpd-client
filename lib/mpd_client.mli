@@ -148,5 +148,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  [selection] to [position] in the current playlist. *)
     val move : connection:Connection.t ->
       selection:selection -> position:int -> unit Io.t
+
+    (** [moveid connection songid position] moves [songid] to [position] in the
+     *  current playlist. *)
+    val moveid : connection:Connection.t ->
+      songid:int -> position:int -> unit Io.t
   end
 end
