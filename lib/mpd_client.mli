@@ -158,5 +158,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  playlist in positions [position1] and [position2]. *)
     val swap : connection:Connection.t ->
       position1:int -> position2:int -> unit Io.t
+
+    (** [swapid connection songid1 songid2] swaps the songs in the current
+     *  playlist with songids [songid1] and [songid2]. *)
+    val swapid : connection:Connection.t ->
+      songid1:int -> songid2:int -> unit Io.t
   end
 end
