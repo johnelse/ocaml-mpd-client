@@ -1,3 +1,10 @@
+(** Represents a selection of songs in a playlist. The [Range] variant
+ *  represents the selection of all tracks from the first index (inclusive)
+ *  to the last index (exclusive). *)
+type selection =
+  | Single of int
+  | Range of (int * int)
+
 (** Receiving an ACK from MPD indicates that an error occurred, possibly
  *  because MPD couldn't understand the command we sent it. *)
 exception Received_ack of Mpd_parser.ack
@@ -116,13 +123,6 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   end
 
   module Playlist : sig
-    (** Represents a selection of songs in a playlist. The [Range] variant
-     *  represents the selection of all tracks from the first index (inclusive)
-     *  to the last index (exclusive). *)
-    type selection =
-      | Single of int
-      | Range of (int * int)
-
     (** [add connection uri] recursively adds file [uri] to the end of the
      *  current playlist. If [uri] is a directory, then all files in that
      *  directory will be added recursively. *)

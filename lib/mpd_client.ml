@@ -1,3 +1,16 @@
+type selection =
+  | Single of int
+  | Range of (int * int)
+
+let string_of_selection = function
+  | Single x -> string_of_int x
+  | Range (first, last) -> Printf.sprintf "%d:%d" first last
+
+let quote str = "\"" ^ str ^ "\""
+
+let string_of_flag = function
+  | true -> "1" | false -> "0"
+
 exception Received_ack of Mpd_parser.ack
 exception Bad_response of string
 
@@ -75,9 +88,6 @@ module Make(Io: Mpd_transport.IO) = struct
   let send_raw_get_response ~connection ~data =
     send_raw ~connection ~data
     >>= (fun () -> expect_ok ~connection)
-
-  let string_of_flag = function
-    | true -> "1" | false -> "0"
 
   module Admin = struct
     let disableoutput ~connection ~outputid =
@@ -182,16 +192,6 @@ module Make(Io: Mpd_transport.IO) = struct
   end
 
   module Playlist = struct
-    type selection =
-      | Single of int
-      | Range of (int * int)
-
-    let string_of_selection = function
-      | Single x -> string_of_int x
-      | Range (first, last) -> Printf.sprintf "%d:%d" first last
-
-    let quote str = "\"" ^ str ^ "\""
-
     let add ~connection ~uri =
       send_raw_get_response ~connection ~data:["add"; quote uri]
       >|= ignore
