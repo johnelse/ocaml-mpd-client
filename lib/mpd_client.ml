@@ -192,6 +192,8 @@ module Make(Io: Mpd_transport.IO) = struct
   end
 
   module Playlist = struct
+    (* Commands for manipulating the current playlist. *)
+
     let add ~connection ~uri =
       send_raw_get_response ~connection ~data:["add"; quote uri]
       >|= ignore
@@ -235,6 +237,16 @@ module Make(Io: Mpd_transport.IO) = struct
     let swapid ~connection ~songid1 ~songid2 =
       send_raw_get_response ~connection
         ~data:["swapid"; string_of_int songid1; string_of_int songid2]
+      >|= ignore
+
+    (* Commands for managing multiple playlists. *)
+
+    let rm ~connection ~name =
+      send_raw_get_response ~connection ~data:["rm"; name]
+      >|= ignore
+
+    let save ~connection ~name =
+      send_raw_get_response ~connection ~data:["save"; name]
       >|= ignore
   end
 end

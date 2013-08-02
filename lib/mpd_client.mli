@@ -123,6 +123,8 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
   end
 
   module Playlist : sig
+    (* Commands for manipulating the current playlist. *)
+
     (** [add connection uri] recursively adds file [uri] to the end of the
      *  current playlist. If [uri] is a directory, then all files in that
      *  directory will be added recursively. *)
@@ -163,5 +165,13 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  playlist with songids [songid1] and [songid2]. *)
     val swapid : connection:Connection.t ->
       songid1:int -> songid2:int -> unit Io.t
+
+    (* Commands for managing multiple playlists. *)
+
+    (** Removes the playlist with [name.m3u] from the playlist directory. *)
+    val rm : connection:Connection.t -> name:string -> unit Io.t
+
+    (** Saves the current playlist as [name.m3u]. *)
+    val save : connection:Connection.t -> name:string -> unit Io.t
   end
 end
