@@ -249,6 +249,11 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["playlistclear"; name]
       >|= ignore
 
+    let playlistdelete ~connection ~name ~songpos =
+      send_raw_get_response ~connection
+        ~data:["playlistdelete"; name; string_of_int songpos]
+      >|= ignore
+
     let rename ~connection ~name ~new_name =
       send_raw_get_response ~connection ~data:["rename"; name; new_name]
       >|= ignore

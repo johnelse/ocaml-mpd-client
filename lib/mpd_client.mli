@@ -176,6 +176,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [playlistclear connection name] clears the playlist [name.m3u] *)
     val playlistclear : connection:Connection.t -> name:string -> unit Io.t
 
+    (** [playlistdelete connection name songpos] deletes the song [songpos]
+     *  from playlist [name.m3u]. *)
+    val playlistdelete : connection:Connection.t ->
+      name:string -> songpos:int -> unit Io.t
+
     (** [rename connection name new_name] renames the playlist [name.m3u] to
      *  [new_name.m3u]. *)
     val rename : connection:Connection.t ->
