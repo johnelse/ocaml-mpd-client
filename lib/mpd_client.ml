@@ -241,6 +241,10 @@ module Make(Io: Mpd_transport.IO) = struct
 
     (* Commands for managing multiple playlists. *)
 
+    let rename ~connection ~name ~new_name =
+      send_raw_get_response ~connection ~data:["rename"; name; new_name]
+      >|= ignore
+
     let rm ~connection ~name =
       send_raw_get_response ~connection ~data:["rm"; name]
       >|= ignore

@@ -168,6 +168,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
 
     (* Commands for managing multiple playlists. *)
 
+    (** [rename connection name new_name] renames the playlist [name.m3u] to
+     *  [new_name.m3u]. *)
+    val rename : connection:Connection.t ->
+      name:string -> new_name:string -> unit Io.t
+
     (** Removes the playlist with [name.m3u] from the playlist directory. *)
     val rm : connection:Connection.t -> name:string -> unit Io.t
 
