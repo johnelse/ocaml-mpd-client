@@ -173,10 +173,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     val rename : connection:Connection.t ->
       name:string -> new_name:string -> unit Io.t
 
-    (** Removes the playlist with [name.m3u] from the playlist directory. *)
+    (** [rm connection name] Removes the playlist with [name.m3u] from the
+     *  playlist directory. *)
     val rm : connection:Connection.t -> name:string -> unit Io.t
 
-    (** Saves the current playlist as [name.m3u]. *)
+    (** [save connection name] saves the current playlist as [name.m3u]. *)
     val save : connection:Connection.t -> name:string -> unit Io.t
   end
 end
