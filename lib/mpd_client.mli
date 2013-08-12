@@ -168,6 +168,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
 
     (* Commands for managing multiple playlists. *)
 
+    (** [listplaylist connection name] lists the songs in playlist [name.m3u] *)
+    val listplaylist : connection:Connection.t ->
+      name:string -> string list Io.t
+
     (** [playlistadd connection name uri] adds [uri] to playlist [name.m3u].
      *  The playlist will be created if it does not exist. *)
     val playlistadd : connection:Connection.t ->

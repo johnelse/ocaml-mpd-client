@@ -241,6 +241,10 @@ module Make(Io: Mpd_transport.IO) = struct
 
     (* Commands for managing multiple playlists. *)
 
+    let listplaylist ~connection ~name =
+      send_raw_get_response ~connection ~data:["listplaylist"; name]
+      >|= List.map snd
+
     let playlistadd ~connection ~name ~uri =
       send_raw_get_response ~connection ~data:["playlistadd"; name; quote uri]
       >|= ignore
