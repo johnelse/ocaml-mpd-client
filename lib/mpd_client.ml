@@ -138,6 +138,10 @@ module Make(Io: Mpd_transport.IO) = struct
         let sock = connection.Connection.sock in
         Io.close_socket sock)
 
+    let password ~connection ~password =
+      send_raw_get_response ~connection ~data:["password"; password]
+      >|= ignore
+
     let ping ~connection =
       send_raw_get_response ~connection ~data:["ping"]
       >|= ignore

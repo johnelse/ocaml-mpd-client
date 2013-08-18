@@ -70,6 +70,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  usable for communicating with MPD. *)
     val close : connection:Connection.t -> unit Io.t
 
+    (** [password connection password] authenticates with MPD using the
+     *  password [password]. *)
+    val password : connection:Connection.t -> password:string -> unit Io.t
+
     (** [ping connection] tests that MPD is still responsive. It will return
      *  unit if MPD is responsive, otherwise will raise an exception. *)
     val ping : connection:Connection.t -> unit Io.t
