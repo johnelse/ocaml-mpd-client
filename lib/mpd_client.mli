@@ -42,6 +42,10 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
      *  current user. *)
     val commands : connection:Connection.t -> string list Io.t
 
+    (** [decoders connection] returns the list of decoder plugins supported by
+     *  MPD. *)
+    val decoders : connection:Connection.t -> Mpd_types.Decoder.t list Io.t
+
     (** [notcommands connection] returns the list of commands not available to
      *  the current user. *)
     val notcommands : connection:Connection.t -> string list Io.t

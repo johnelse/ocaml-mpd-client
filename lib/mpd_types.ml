@@ -14,6 +14,60 @@ let map_opt f x =
   | None -> None
   | Some value -> Some (f value)
 
+let take_while f items =
+  let rec take_while' acc f items =
+    match items with
+    | [] -> acc, []
+    | head :: rest as all ->
+      if f head
+      then take_while' (head :: acc) f rest
+      else acc, all
+  in
+  match take_while' [] f items with
+  | first, second -> List.rev first, second
+
+module Decoder = struct
+  type t = {
+    plugin: string;
+    suffixes: string list;
+    mime_types: string list;
+  }
+
+  let of_kvpairs kvpairs =
+    let plugin = match List.hd kvpairs with
+    | "plugin", value -> value
+    | _ -> raise (Missing_key "plugin")
+    in
+    let suffixes, mime_types = List.fold_left
+      (fun (suffixes, mime_types) (key, value) ->
+        match key, value with
+        | "suffix", value -> (value :: suffixes, mime_types)
+        | "mime_type", value -> (suffixes, value :: mime_types)
+        | key, value -> raise (Unexpected_value (key, value)))
+      ([], []) (List.tl kvpairs)
+    in
+    {
+      plugin = plugin;
+      suffixes = List.rev suffixes;
+      mime_types = List.rev mime_types;
+    }
+
+  let multiple_of_kvpairs kvpairs =
+    let rec partition acc kvpairs =
+      (* Turn a list into a list of lists, where each list contains the
+       * key-value pairs for one decoder. *)
+      match kvpairs with
+      | [] -> acc
+      | _ ->
+        let first_pair = List.hd kvpairs in
+        let other_pairs, rest =
+          take_while (fun (key, _) -> key <> "plugin") (List.tl kvpairs)
+        in
+        partition ((first_pair :: other_pairs) :: acc) rest
+    in
+    List.rev (List.map of_kvpairs (partition [] kvpairs))
+end
+
 module Output = struct
   type t = {
     outputid: int;

@@ -106,6 +106,10 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["commands"]
       >|= List.map snd
 
+    let decoders ~connection =
+      send_raw_get_response ~connection ~data:["decoders"]
+      >|= Mpd_types.Decoder.multiple_of_kvpairs
+
     let notcommands ~connection =
       send_raw_get_response ~connection ~data:["notcommands"]
       >|= List.map snd
