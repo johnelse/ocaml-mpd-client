@@ -94,6 +94,28 @@ module Output = struct
     List.rev (read_all [] kvpairs)
 end
 
+module Listall = struct
+  type t = {
+    directories: string list;
+    files: string list
+  }
+
+  let of_kvpairs kvpairs =
+    let directories, files =
+      List.fold_left
+        (fun (directories, files) (key, value) ->
+          match key with
+          | "directory" -> value :: directories, files
+          | "file" -> directories, value :: files
+          | _ -> raise (Unexpected_value (key, value)))
+        ([], []) (List.rev kvpairs)
+    in
+    {
+      directories = directories;
+      files = files;
+    }
+end
+
 module Stats = struct
   type t = {
     artists: int;

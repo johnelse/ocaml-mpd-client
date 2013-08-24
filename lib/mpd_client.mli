@@ -37,6 +37,13 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     val enableoutput : connection:Connection.t -> outputid:int -> unit Io.t
   end
 
+  module Database : sig
+    (** [listall connection uri] returns the directories and files in the
+     *  database, optionally restricted to those under [path]. *)
+    val listall : connection:Connection.t ->
+      path:string option -> Mpd_types.Listall.t Io.t
+  end
+
   module Info : sig
     (** [commands connection] returns the list of commands available to the
      *  current user. *)

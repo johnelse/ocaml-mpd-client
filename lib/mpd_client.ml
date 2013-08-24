@@ -101,6 +101,16 @@ module Make(Io: Mpd_transport.IO) = struct
       >|= ignore
   end
 
+  module Database = struct
+    let listall ~connection ~path =
+      let data =
+        ["listall"] @
+        (match path with Some x -> [quote x] | None -> [])
+      in
+      send_raw_get_response ~connection ~data
+      >|= Mpd_types.Listall.of_kvpairs
+  end
+
   module Info = struct
     let commands ~connection =
       send_raw_get_response ~connection ~data:["commands"]
