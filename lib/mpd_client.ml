@@ -108,7 +108,7 @@ module Make(Io: Mpd_transport.IO) = struct
         (match path with Some x -> [quote x] | None -> [])
       in
       send_raw_get_response ~connection ~data
-      >|= Mpd_types.Listall.of_kvpairs
+      >|= Mpd_types.PathList.of_kvpairs
   end
 
   module Info = struct

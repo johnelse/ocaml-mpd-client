@@ -41,7 +41,7 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [listall connection uri] returns the directories and files in the
      *  database, optionally restricted to those under [path]. *)
     val listall : connection:Connection.t ->
-      path:string option -> Mpd_types.Listall.t Io.t
+      path:string option -> Mpd_types.PathList.t Io.t
   end
 
   module Info : sig

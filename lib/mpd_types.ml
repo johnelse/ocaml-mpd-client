@@ -94,7 +94,7 @@ module Output = struct
     List.rev (read_all [] kvpairs)
 end
 
-module Listall = struct
+module PathList = struct
   type t = {
     directories: string list;
     files: string list
