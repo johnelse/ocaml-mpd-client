@@ -116,6 +116,38 @@ module PathList = struct
     }
 end
 
+module Scope = struct
+  type t =
+    | Any
+    | Filename
+    | Album
+    | Artist
+    | Comment
+    | Composer
+    | Date
+    | Disc
+    | Genre
+    | Name
+    | Performer
+    | Title
+    | Track
+
+  let to_string = function
+    | Any -> "any"
+    | Filename -> "filename"
+    | Album -> "album"
+    | Artist -> "artist"
+    | Comment -> "comment"
+    | Composer -> "composer"
+    | Date -> "date"
+    | Disc -> "disc"
+    | Genre -> "genre"
+    | Name -> "name"
+    | Performer -> "performer"
+    | Title -> "title"
+    | Track -> "track"
+end
+
 module Stats = struct
   type t = {
     artists: int;
