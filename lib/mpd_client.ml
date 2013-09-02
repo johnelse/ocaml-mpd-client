@@ -288,4 +288,13 @@ module Make(Io: Mpd_transport.IO) = struct
       send_raw_get_response ~connection ~data:["save"; name]
       >|= ignore
   end
+
+  module Sticker = struct
+    let common ~connection ~command ~args =
+      send_raw_get_response ~connection ~data:("sticker" :: command :: args)
+
+    let set ~connection ~_type ~uri ~name ~value =
+      common ~connection ~command:"set" ~args:[_type; quote uri; name; value]
+      >|= ignore
+  end
 end

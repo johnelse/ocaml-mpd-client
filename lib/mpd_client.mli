@@ -212,4 +212,11 @@ module Make : functor (Io: Mpd_transport.IO) -> sig
     (** [save connection name] saves the current playlist as [name.m3u]. *)
     val save : connection:Connection.t -> name:string -> unit Io.t
   end
+
+  module Sticker : sig
+    (** [set type uri name value] adds a sticker to the object of type [type]
+     *  identified by [uri]. *)
+    val set : connection:Connection.t -> _type:string ->
+      uri:string -> name:string -> value:string -> unit Io.t
+  end
 end
