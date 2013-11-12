@@ -1,0 +1,10 @@
+PKG lwt lwt.syntax lwt.unix oUnit
+S lib
+S lwt
+S unix
+S test
+
+B dist/build/lib-mpd_client
+B dist/build/lib-mpd_client_lwt
+B dist/build/lib-mpd_client_unix
+B dist/build/test_parser
