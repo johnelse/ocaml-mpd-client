@@ -8,13 +8,13 @@ library mpd_client
   build-deps: re.perl
   modules: mpd_parser, mpd_transport, mpd_types, mpd_client
 
-library mpd_client.lwt
+library mpd_client_lwt
   src-dir: lwt
   modules: mpd_client_lwt
   pp: camlp4o
   build-deps: mpd_client, lwt, lwt.syntax, lwt.unix
 
-library mpd_client.unix
+library mpd_client_unix
   src-dir: unix
   modules: mpd_client_unix
   build-deps: mpd_client

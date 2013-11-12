@@ -5,8 +5,8 @@ dist/build/lib-mpd-client/mpd-client.cmxa:
 install:
 	ocamlfind install mpd-client lib/META \
 		$(wildcard dist/build/lib-mpd_client/*) \
-		$(wildcard dist/build/lib-mpd_client.lwt/*) \
-		$(wildcard dist/build/lib-mpd_client.unix/*)
+		$(wildcard dist/build/lib-mpd_client_lwt/*) \
+		$(wildcard dist/build/lib-mpd_client_unix/*)
 
 uninstall:
 	ocamlfind remove mpd-client
